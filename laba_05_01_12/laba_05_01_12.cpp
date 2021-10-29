@@ -1,4 +1,11 @@
 ﻿#include <iostream>
+#include <fstream>
+#include <string>
+#include "List.h"
+#include "Keeper.h"
+#include "Tree.h"
+#include "Member.h"
+
 
 int main()
 {
