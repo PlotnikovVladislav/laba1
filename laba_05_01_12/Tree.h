@@ -1,11 +1,12 @@
 #pragma once
+#include <iostream>
 #include <string>
 class Tree
 {
-protected:
-	std::string FIO, parents, spouse, children, birth, death;
-	int age;
 public:
+	Tree();
+	virtual ~Tree();
 	virtual std::string data() = 0;
+	virtual std::string data_print() = 0;
 };
 
