@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
+#include <Windows.h>
 #include "List.h"
 #include "Keeper.h"
 #include "Tree.h"
@@ -9,7 +10,95 @@
 
 int main()
 {
-	std::cout << "Hello World!\n";
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	Keeper kipper;
+	int c;
+
+	while (true)
+	{
+		cout << "\nМеню"
+			<< "\n1.Восстановление из файла"
+			<< "\n2.Добавить человека"
+			<< "\n3.Вывод данных на экран"
+			<< "\n4.Удалить человека"
+			<< "\n5.Сохранение в файл"
+			<< "\n0.Выход без сохранения\n->";
+		cin >> c;
+		
+		switch (c)
+		{
+		case 1: {
+			if (kipper.loadFromFile("save.txt"))
+				cout << "\tДанные успешно загружены\n";
+			else
+				cout << "\tФайл не найден или повреждён\n";
+			break; }
+		case 2: {
+
+			std::string FIO, parents, lover, children, birth, death;
+			int age;
+			cout << "\tВведите ФИО: ";
+			getline(cin, FIO);
+			getline(cin, FIO);
+			cout << "\tВведите данные о родителях: ";
+			getline(cin, parents);
+			cout << "\tВведите данные о супруге: ";
+			getline(cin, lover);
+			cout << "\tВведите данные о детях: ";
+			getline(cin, children);
+			cout << "\tВведите дату рождения: ";
+			getline(cin, birth);
+			cout << "\tВведите дату смерти: ";
+			getline(cin, death);
+			cout << "\tВведите возраст: ";
+			cin >> age;
+			kipper.addElem(new Member(FIO, parents, lover, children, birth, death, age));
+			cout << "\tчеловек №" << kipper.size() << " успешно добавлен\n";
+				
+			break; }
+		case 3: {
+			if (kipper.size() == 0)
+				cout << "\tЛюди отсутствуют.\n";
+			else
+				kipper.printAll();
+			break; }
+		case 4: {
+			if (kipper.size() == 0)
+				cout << "\tЛюди отсутствуют.\n";
+			else
+			{
+				size_t num;
+				cout << "\tВыбирите человека. Доступны: №"
+					<< (kipper.size() == 1 ? "" : "1 - №")
+					<< (kipper.size() == 1 ? 1 : kipper.size())
+					<< "\n\t->";
+				cin >> num;
+				try
+				{
+					kipper.deleteElem(num - 1);
+					cout << "\tДанные успешно удалены\n";
+				}
+				catch (int)
+				{
+					cout << "\tВыбрано недопустимое значение!\n";
+				}
+			}
+			break; }
+		case 5: {
+			if (kipper.saveToFile("save.txt"))
+				cout << "\tДанные успешно сохранены\n";
+			else
+				cout << "\tПри сохранении произошла ошибка\n";
+			break; }
+		case 0: {
+			cout << "\t\t  Все несохраненные данные будут утеряны!"
+				<< "\n\t\t  Продолжить?(1-Да / 0-Нет)\n\t\t->";
+			cin >> c;
+			if (c == 1) return 0; }
+		}
+	}
 }
 
 /*
